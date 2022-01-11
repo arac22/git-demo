@@ -1,2 +1,2 @@
 This is a git demo repo
-This tiume I hope toget it right!
+This time I hope to get it right!
