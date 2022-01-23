@@ -3,5 +3,6 @@ int foo(){
 }
 
 int bar(){
+	int i = 0;
 	return 0;
 }
