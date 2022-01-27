@@ -1,5 +1,5 @@
 int aaa(void) {
     int c = 0;
-    c++;
+    c +=3; 
     return 0;
 }
