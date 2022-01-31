@@ -2,7 +2,7 @@
 
 
 int ddd(void) {
-	int d = 0;
+	int d = 100;
 	return 0;
 }
 
