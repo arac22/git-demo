@@ -1,8 +1,8 @@
 //I want to stash something
 
 
-int ddd(void) {
-	int d = 100;
-	return 0;
+void ddd(void) {
+	int d = 1000;
+	return d;
 }
 
