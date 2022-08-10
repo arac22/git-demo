@@ -3,5 +3,5 @@ int main() {
 	int j = 0;
 	i++;
 	j++;
-	return 0;
+	return 1; //just an experiment
 }
