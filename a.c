@@ -7,3 +7,8 @@ int main() {
 	j++;
 	return 1; //just an experiment
 }
+
+int foo(){
+	int = 0;
+	return 0;
+}
