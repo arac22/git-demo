@@ -10,5 +10,5 @@ int main() {
 
 int foo(){
 	int = 0;
-	return 0;
+	return i;
 }
