@@ -9,6 +9,7 @@ int main() {
 }
 
 int foo(){
-	int = 0;
+	int i = 0;
+	i++;
 	return i;
 }
