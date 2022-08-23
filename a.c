@@ -13,3 +13,7 @@ int foo(){
 	i++;
 	return i;
 }
+
+int bar(){
+	return 0;
+}
