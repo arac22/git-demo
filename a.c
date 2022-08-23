@@ -16,5 +16,6 @@ int foo(){
 
 int bar(){
 	int k = 0;
+	k++;
 	return 0;
 }
