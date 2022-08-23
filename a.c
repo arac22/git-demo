@@ -15,5 +15,6 @@ int foo(){
 }
 
 int bar(){
+	int k = 0;
 	return 0;
 }
