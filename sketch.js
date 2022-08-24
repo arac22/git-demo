@@ -28,6 +28,7 @@ function draw() {
 
   // We can call both functions to draw all keypoints and the skeletons
   drawKeypoints();
+  drawConfidence();
 }
 
 // A function to draw ellipses over the detected keypoints
@@ -43,6 +44,16 @@ function drawKeypoints() {
 	
   }
   if (predictions.length > 0){
-    console.log(predictions[0]);  
+    console.log(predictions[0].handInViewConfidence);  
+  } else {
+    console.log(0);  
+  }
+}
+
+function drawConfidence(){
+  if (predictions.length > 0){
+    text(predictions[0].handInViewConfidence, 50, 50);  
+  } else {
+    text("Look mama no hands", 50, 50);  
   }
 }
