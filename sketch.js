@@ -50,13 +50,7 @@ function mousePressed(){
       label: targetLabel
     }  
     model.addData(inputs,targets);
-    stroke(0);
-    noFill();
-    ellipse(mouseX, mouseY, 24);
-    fill(0);
-    noStroke();
-    textAlign(CENTER, CENTER);
-    text(targetLabel,mouseX, mouseY);
+    drawLabel(targetLabel);
   } else if (state = 'prediction'){
     model.classify(inputs, gotResults);
   }
@@ -67,13 +61,28 @@ function gotResults(error, results){
     console.log(error);
   }
   console.log(results);
-  stroke(0);
-  fill(0,0,255,100);
-  ellipse(mouseX, mouseY, 24);
-  fill(0);
-  noStroke();
-  textAlign(CENTER, CENTER);
   let label = results[0].label
-  text(label,mouseX, mouseY);
+  drawLabel(label);
+}
 
+function drawLabel(label){
+  switch (label){
+    case 'C':
+      fill('white');
+      break;
+  case 'D':
+    fill('red');
+    break;
+  case 'E':
+    fill('blue');
+    break;
+  }
+
+  stroke(0);
+  ellipse(mouseX, mouseY, 24);
+ 
+  noStroke();
+  fill('blue');
+  textAlign(CENTER, CENTER);
+  text(label,mouseX, mouseY);
 }
