@@ -17,6 +17,32 @@ function setup() {
 }
 
 function keyPressed(){
+  if (key =='m'){
+    if (state == 'prediction'){
+      for (let xx = 0;xx < 640; xx += 100){
+        for (let yy = 0;yy < 400; yy += 100){
+          let mapInputs = {
+            x: xx,
+            y: yy
+          }
+          model.classify(mapInputs, gotMapResults);
+        }  
+      }
+    }
+  }
+
+
+  function gotMapResults(error, results){
+    if(error){
+      console.log(error);
+    }
+    console.log(results);
+    let label = results[0].label
+    drawLabel(label);
+  }
+
+
+
   if ( key =='t'){
     state = 'training';
     console.log('start training')
@@ -66,12 +92,13 @@ function gotResults(error, results){
 }
 
 function drawLabel(label){
+
   switch (label){
     case 'C':
-      fill('white');
+      fill('red');
       break;
   case 'D':
-    fill('red');
+    fill('green');
     break;
   case 'E':
     fill('blue');
@@ -79,10 +106,14 @@ function drawLabel(label){
   }
 
   stroke(0);
-  ellipse(mouseX, mouseY, 24);
+  if (state == "prediction")
+    ellipse(mouseX, mouseY, 6);
+  else {
+    ellipse(mouseX, mouseY, 36);
+    noStroke();
+    fill('white');
+    textAlign(CENTER, CENTER);
+    text(label,mouseX, mouseY);  
+  }
  
-  noStroke();
-  fill('blue');
-  textAlign(CENTER, CENTER);
-  text(label,mouseX, mouseY);
 }
