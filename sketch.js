@@ -1,4 +1,3 @@
-
 let model;
 let targetLabel = 'C';
 let state = 'collection'
@@ -16,7 +15,33 @@ function setup() {
   model = ml5.neuralNetwork(options);
 }
 
+let mapInputs = [
+  [0, 100],
+  [100, 100],
+  [200, 100],
+  [300, 100],
+  [400, 100],
+  [500, 100],
+  [600, 100],
+];
+
+function createMapInputs(step){
+  let index = 0;
+  for (i = 0; i < 640/step; i++){
+    for (j = 0; j < 400/step; j++){
+      mapInputs[index++] = [i*step,j*step]; 
+    }
+  }
+}
+
 function keyPressed(){
+  if (key =='m'){
+    if (state == 'prediction'){
+       createMapInputs(10);
+       model.classifyMultiple(mapInputs, gotMapResults);
+    }
+  }
+
   if ( key =='t'){
     state = 'training';
     console.log('start training')
@@ -29,6 +54,20 @@ function keyPressed(){
 
   targetLabel = key.toUpperCase();
 }
+
+
+function gotMapResults(error, results){
+  if(error){
+    console.log(error);
+    return;
+  }
+  console.log(results);
+  for(let i = 0; i < results.length; i++) {
+    let label = results[i][0].label
+    drawLabel(label, mapInputs[i][0], mapInputs[i][1]);  
+  }
+}
+
 
 
 function whileTraining(epoch, loss){
@@ -45,18 +84,15 @@ function mousePressed(){
     x: mouseX,
     y: mouseY
   }   
+  
+  console.log(mouseX, mouseY);
+
   if (state == 'collection'){
     let targets = {
       label: targetLabel
     }  
     model.addData(inputs,targets);
-    stroke(0);
-    noFill();
-    ellipse(mouseX, mouseY, 24);
-    fill(0);
-    noStroke();
-    textAlign(CENTER, CENTER);
-    text(targetLabel,mouseX, mouseY);
+    drawLabel(targetLabel, mouseX,mouseY);
   } else if (state = 'prediction'){
     model.classify(inputs, gotResults);
   }
@@ -65,15 +101,35 @@ function mousePressed(){
 function gotResults(error, results){
   if(error){
     console.log(error);
+    return;
   }
   console.log(results);
-  stroke(0);
-  fill(0,0,255,100);
-  ellipse(mouseX, mouseY, 24);
-  fill(0);
-  noStroke();
-  textAlign(CENTER, CENTER);
   let label = results[0].label
-  text(label,mouseX, mouseY);
-
+  drawLabel(label, mouseX,mouseY);
 }
+
+function drawLabel(label, x, y){
+
+  switch (label){
+    case 'C':
+      fill('red');
+      break;
+  case 'D':
+    fill('yellow');
+    break;
+  case 'E':
+    fill('blue');
+    break;
+  }
+
+  stroke(0);
+  if (state == "prediction")
+    ellipse(x, y, 6);
+  else {
+    ellipse(mouseX, mouseY, 36);
+    noStroke();
+    fill('white');
+    textAlign(CENTER, CENTER);
+    text(label,x, y);  
+  }
+} 
