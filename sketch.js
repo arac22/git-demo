@@ -1,4 +1,3 @@
-
 let model;
 let targetLabel = 'C';
 let state = 'collection'
@@ -16,32 +15,34 @@ function setup() {
   model = ml5.neuralNetwork(options);
 }
 
+
+let mapInputs = {
+  x: 0,
+  y: 0
+}
+
 function keyPressed(){
   if (key =='m'){
     if (state == 'prediction'){
-      for (let xx = 0;xx < 640; xx += 100){
-        for (let yy = 0;yy < 400; yy += 100){
-          let mapInputs = {
-            x: xx,
-            y: yy
-          }
-          model.classify(mapInputs, gotMapResults);
-        }  
+   
+
+      mapInputs.x += 50;
+
+      if (mapInputs.x > 640) {
+        mapInputs.x = 0;
+        mapInputs.y += 50;
       }
+      if (mapInputs.y > 400){
+        mapInputs.y = 0;
+      }
+
+      console.log(mapInputs.x, mapInputs.y);
+      model.classify(mapInputs, gotMapResults);
+
+
+
     }
   }
-
-
-  function gotMapResults(error, results){
-    if(error){
-      console.log(error);
-    }
-    console.log(results);
-    let label = results[0].label
-    drawLabel(label);
-  }
-
-
 
   if ( key =='t'){
     state = 'training';
@@ -55,6 +56,19 @@ function keyPressed(){
 
   targetLabel = key.toUpperCase();
 }
+
+
+function gotMapResults(error, results){
+  if(error){
+    console.log(error);
+    return;
+  }
+  console.log(results);
+  let label = results[0].label
+  drawLabel(label, mapInputs.x, mapInputs.y);
+}
+
+
 
 
 function whileTraining(epoch, loss){
@@ -71,12 +85,15 @@ function mousePressed(){
     x: mouseX,
     y: mouseY
   }   
+  
+  console.log(mouseX, mouseY);
+
   if (state == 'collection'){
     let targets = {
       label: targetLabel
     }  
     model.addData(inputs,targets);
-    drawLabel(targetLabel);
+    drawLabel(targetLabel, mouseX,mouseY);
   } else if (state = 'prediction'){
     model.classify(inputs, gotResults);
   }
@@ -85,20 +102,21 @@ function mousePressed(){
 function gotResults(error, results){
   if(error){
     console.log(error);
+    return;
   }
   console.log(results);
   let label = results[0].label
-  drawLabel(label);
+  drawLabel(label, mouseX,mouseY);
 }
 
-function drawLabel(label){
+function drawLabel(label, x, y){
 
   switch (label){
     case 'C':
       fill('red');
       break;
   case 'D':
-    fill('green');
+    fill('yellow');
     break;
   case 'E':
     fill('blue');
@@ -107,13 +125,13 @@ function drawLabel(label){
 
   stroke(0);
   if (state == "prediction")
-    ellipse(mouseX, mouseY, 6);
+    ellipse(x, y, 6);
   else {
     ellipse(mouseX, mouseY, 36);
     noStroke();
     fill('white');
     textAlign(CENTER, CENTER);
-    text(label,mouseX, mouseY);  
+    text(label,x, y);  
   }
  
 }
