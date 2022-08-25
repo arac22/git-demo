@@ -15,32 +15,30 @@ function setup() {
   model = ml5.neuralNetwork(options);
 }
 
+let mapInputs = [
+  [0, 100],
+  [100, 100],
+  [200, 100],
+  [300, 100],
+  [400, 100],
+  [500, 100],
+  [600, 100],
+];
 
-let mapInputs = {
-  x: 0,
-  y: 0
+function createMapInputs(step){
+  let index = 0;
+  for (i = 0; i < 640/step; i++){
+    for (j = 0; j < 400/step; j++){
+      mapInputs[index++] = [i*step,j*step]; 
+    }
+  }
 }
 
 function keyPressed(){
   if (key =='m'){
     if (state == 'prediction'){
-   
-
-      mapInputs.x += 50;
-
-      if (mapInputs.x > 640) {
-        mapInputs.x = 0;
-        mapInputs.y += 50;
-      }
-      if (mapInputs.y > 400){
-        mapInputs.y = 0;
-      }
-
-      console.log(mapInputs.x, mapInputs.y);
-      model.classify(mapInputs, gotMapResults);
-
-
-
+       createMapInputs(10);
+       model.classifyMultiple(mapInputs, gotMapResults);
     }
   }
 
@@ -64,10 +62,11 @@ function gotMapResults(error, results){
     return;
   }
   console.log(results);
-  let label = results[0].label
-  drawLabel(label, mapInputs.x, mapInputs.y);
+  for(let i = 0; i < results.length; i++) {
+    let label = results[i][0].label
+    drawLabel(label, mapInputs[i][0], mapInputs[i][1]);  
+  }
 }
-
 
 
 
@@ -133,5 +132,4 @@ function drawLabel(label, x, y){
     textAlign(CENTER, CENTER);
     text(label,x, y);  
   }
- 
-}
+} 
