@@ -7,16 +7,21 @@ function setup() {
   createCanvas(640, 480); 
 
   let options = {
+    //dataUrl: 'mouse-notes.json',
     inputs: ['x','y'],
     outputs: ['label'],
     task: 'classification',
     debug: 'true',
     learningRate: 0.5
   }
-  model = ml5.neuralNetwork(options);
+  model = ml5.neuralNetwork(options, modelLoaded);
   model.loadData('mouse-notes.json', dataLoaded);
 }
 
+
+function modelLoaded(){
+  console.log('model loaded!')
+}
 
 function dataLoaded(){
   console.log(model.data)
