@@ -10,9 +10,16 @@ function setup() {
     inputs: ['x','y'],
     outputs: ['label'],
     task: 'classification',
-    debug: 'true'
+    debug: 'true',
+    learningRate: 0.5
   }
   model = ml5.neuralNetwork(options);
+  model.loadData('mouse-notes.json', dataLoaded);
+}
+
+
+function dataLoaded(){
+  console.log(model.data)
 }
 
 let mapInputs = [
@@ -40,9 +47,7 @@ function keyPressed(){
        createMapInputs(10);
        model.classifyMultiple(mapInputs, gotMapResults);
     }
-  }
-
-  if ( key =='t'){
+  } else if ( key =='t'){
     state = 'training';
     console.log('start training')
     model.normalizeData();
@@ -50,6 +55,8 @@ function keyPressed(){
       epochs:100
     }
     model.train(options, whileTraining, finishedTraining);
+  } else if (key == 's'){
+    model.saveData('mouse-notes');
   }
 
   targetLabel = key.toUpperCase();
