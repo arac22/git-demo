@@ -20,8 +20,9 @@ function setup() {
 
 
 function modelLoaded(){
-  console.log('model loaded!')
+  console.log(model.data)
 }
+
 
 function dataLoaded(){
   console.log(model.data)
