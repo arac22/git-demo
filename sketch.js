@@ -3,23 +3,49 @@ let targetLabel = 'C';
 let state = 'collection'
 //let trainingData = [];
 
+
+
+let savedData = [];
+function preload() {
+  // Get the saved model data
+  savedData = loadJSON('mouse-notes.json');
+}
+
+
+
 function setup() {
   createCanvas(640, 480); 
-
   let options = {
+    //dataUrl: 'mouse-notes.json',
     inputs: ['x','y'],
     outputs: ['label'],
     task: 'classification',
     debug: 'true',
     learningRate: 0.5
   }
-  model = ml5.neuralNetwork(options);
+  model = ml5.neuralNetwork(options, modelLoaded);
   model.loadData('mouse-notes.json', dataLoaded);
 }
 
 
-function dataLoaded(){
+function modelLoaded(){
   console.log(model.data)
+}
+
+
+
+function drawSavedData(){
+  for(let i = 0; i < savedData.data.length; i++) {
+    x = savedData.data[i].xs.x
+    y = savedData.data[i].xs.y
+    label = savedData.data[i].ys.label
+    drawLabel(label, x, y);  
+  }
+}
+
+function dataLoaded(){
+  console.log(model.data);
+  drawSavedData();	
 }
 
 let mapInputs = [
@@ -103,6 +129,7 @@ function mousePressed(){
   } else if (state = 'prediction'){
     model.classify(inputs, gotResults);
   }
+  
 }
 
 function gotResults(error, results){
@@ -133,10 +160,11 @@ function drawLabel(label, x, y){
   if (state == "prediction")
     ellipse(x, y, 6);
   else {
-    ellipse(mouseX, mouseY, 36);
+    ellipse(x, y, 36);
     noStroke();
     fill('white');
     textAlign(CENTER, CENTER);
     text(label,x, y);  
   }
-} 
+ 
+}
