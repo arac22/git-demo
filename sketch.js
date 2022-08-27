@@ -15,6 +15,10 @@ function preload() {
 
 function setup() {
   createCanvas(640, 480); 
+  //text(100,, "press 't' to train, 'm' to map, 's' to save data, 'd' to save model")
+  let p = createP("press 't' to train, 'm' to map, 's' to save data, 'd' to save model");
+  p.style('font-size', '16px');
+  p.position(100, 0);
   let options = {
     //dataUrl: 'mouse-notes.json',
     inputs: ['x','y'],
