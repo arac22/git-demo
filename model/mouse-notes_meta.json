@@ -1,0 +1,48 @@
+{
+    "inputUnits": [
+        2
+    ],
+    "outputUnits": 3,
+    "inputs": {
+        "x": {
+            "dtype": "number",
+            "min": 121,
+            "max": 560
+        },
+        "y": {
+            "dtype": "number",
+            "min": 55.44000244140625,
+            "max": 365.44000244140625
+        }
+    },
+    "outputs": {
+        "label": {
+            "dtype": "string",
+            "min": 0,
+            "max": 1,
+            "uniqueValues": [
+                "C",
+                "D",
+                "E"
+            ],
+            "legend": {
+                "C": [
+                    1,
+                    0,
+                    0
+                ],
+                "D": [
+                    0,
+                    1,
+                    0
+                ],
+                "E": [
+                    0,
+                    0,
+                    1
+                ]
+            }
+        }
+    },
+    "isNormalized": true
+}
