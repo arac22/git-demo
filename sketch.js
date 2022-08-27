@@ -83,6 +83,8 @@ function keyPressed(){
     model.train(options, whileTraining, finishedTraining);
   } else if (key == 's'){
     model.saveData('mouse-notes');
+  } else if (key == 'd'){
+    model.save('mouse-notes');
   }
 
   targetLabel = key.toUpperCase();
